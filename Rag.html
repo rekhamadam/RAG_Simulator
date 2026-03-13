@@ -1,0 +1,218 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RAG Simulator</title>
+
+<style>
+
+body{
+font-family: 'Segoe UI', sans-serif;
+background: linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+margin:0;
+padding:0;
+}
+
+header{
+text-align:center;
+padding:30px;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+width:95%;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding-bottom:40px;
+}
+
+.card{
+background:#1e293b;
+border-radius:12px;
+padding:20px;
+min-height:140px;
+box-shadow:0 8px 20px rgba(0,0,0,0.4);
+transition:0.3s;
+}
+
+.card.active{
+border:2px solid #38bdf8;
+transform:scale(1.03);
+}
+
+.title{
+font-size:16px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.content{
+font-size:14px;
+opacity:0.9;
+}
+
+.controls{
+text-align:center;
+margin:20px;
+}
+
+button{
+background:#38bdf8;
+border:none;
+padding:12px 20px;
+margin:10px;
+border-radius:8px;
+font-size:14px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#0ea5e9;
+}
+
+input{
+padding:10px;
+border-radius:8px;
+border:none;
+width:250px;
+}
+
+.answer{
+text-align:center;
+font-size:18px;
+margin-top:20px;
+color:#22c55e;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+RAG Simulator – Understand Retrieval Augmented Generation
+</header>
+
+<div class="controls">
+
+<input id="question" placeholder="Ask a question (example: leave policy)">
+<button onclick="runRAG()">Run RAG Simulation</button>
+
+</div>
+
+<div class="container">
+
+<div class="card" id="step1">
+<div class="title">1. Documents Added</div>
+<div class="content">
+HR Policy <br>
+Leave Policy <br>
+Travel Policy
+</div>
+</div>
+
+<div class="card" id="step2">
+<div class="title">2. Split into Chunks</div>
+<div class="content" id="chunks"></div>
+</div>
+
+<div class="card" id="step3">
+<div class="title">3. Create Embeddings</div>
+<div class="content" id="embeddings"></div>
+</div>
+
+<div class="card" id="step4">
+<div class="title">4. Stored in Vector DB</div>
+<div class="content">Semantic vectors stored</div>
+</div>
+
+<div class="card" id="step5">
+<div class="title">5. User Question</div>
+<div class="content" id="userq"></div>
+</div>
+
+<div class="card" id="step6">
+<div class="title">6. Retrieve Relevant Chunks</div>
+<div class="content" id="retrieved"></div>
+</div>
+
+<div class="card" id="step7">
+<div class="title">7. Send Context to LLM</div>
+<div class="content" id="context"></div>
+</div>
+
+<div class="card" id="step8">
+<div class="title">8. LLM Generates Answer</div>
+<div class="content" id="answer"></div>
+</div>
+
+</div>
+
+<div class="answer" id="final"></div>
+
+<script>
+
+function highlight(step){
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("active"));
+document.getElementById(step).classList.add("active");
+}
+
+function runRAG(){
+
+let q=document.getElementById("question").value;
+
+document.getElementById("userq").innerText=q;
+
+let chunks=[
+"Leave policy allows 15 days leave per year",
+"Employees must inform HR before leave",
+"Travel reimbursement rules"
+];
+
+highlight("step2")
+
+setTimeout(()=>{
+document.getElementById("chunks").innerHTML=chunks.join("<br>");
+highlight("step3")
+},800)
+
+setTimeout(()=>{
+document.getElementById("embeddings").innerText="[0.21,0.77,0.43...]";
+highlight("step4")
+},1600)
+
+setTimeout(()=>{
+highlight("step5")
+},2400)
+
+setTimeout(()=>{
+let retrieved="Leave policy allows 15 days leave per year";
+document.getElementById("retrieved").innerText=retrieved;
+highlight("step6")
+},3200)
+
+setTimeout(()=>{
+document.getElementById("context").innerText="Context: Leave policy allows 15 days leave per year";
+highlight("step7")
+},4000)
+
+setTimeout(()=>{
+let ans="Our leave policy allows 15 days leave per year.";
+document.getElementById("answer").innerText=ans;
+document.getElementById("final").innerText=ans;
+highlight("step8")
+},4800)
+
+}
+
+</script>
+
+</body>
+</html>
+```
